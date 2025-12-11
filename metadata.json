@@ -1,0 +1,8 @@
+{
+  "name": "Neuro-Rehab Assistant",
+  "description": "An AI-powered neuro-rehabilitation assistant using Gemini 3 for real-time coaching, adaptive planning, and clinician reporting.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
