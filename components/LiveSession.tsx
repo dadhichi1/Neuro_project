@@ -79,8 +79,8 @@ const calculateMotionMetrics = (
     const gDiff = Math.abs(current[i + 1] - prev[i + 1]);
     const bDiff = Math.abs(current[i + 2] - prev[i + 2]);
     
-    // Pixel Difference Threshold
-    if (rDiff + gDiff + bDiff > 40) { 
+    // Pixel Difference Threshold - LOWERED for higher sensitivity
+    if (rDiff + gDiff + bDiff > 25) { 
        diffScore += (rDiff + gDiff + bDiff);
        
        // Calculate X coordinate of this pixel
@@ -99,7 +99,7 @@ const calculateMotionMetrics = (
 
   return { 
     score: Math.min(100, diffScore / (width * height) * 10), // Normalized 0-100 score
-    centroidX: activePixels > 20 ? normalizedX : 0 // Lower threshold for responsiveness
+    centroidX: activePixels > 10 ? normalizedX : 0 // Lower threshold for responsiveness
   };
 };
 
@@ -511,10 +511,8 @@ const LiveSession: React.FC = () => {
                               const { score, centroidX } = calculateMotionMetrics(imageData.data, lastFrameDataRef.current, ac.width, ac.height);
                               
                               // Update Visuals
-                              // Map centroid (-1 to 1) to angle (-35deg to 35deg)
-                              // If I lean right (screen right), centroidX > 0.
-                              // Rotation in SVG: Positive is Clockwise (Right lean).
-                              setUserLean(centroidX * 35); 
+                              // Map centroid (-1 to 1) to angle (-60deg to 60deg) - INCREASED MULTIPLIER for demo sensitivity
+                              setUserLean(centroidX * 60); 
                               
                               // Update Score (Stability is inverse of erratic motion unless moving)
                               setMatchScore(prev => {
